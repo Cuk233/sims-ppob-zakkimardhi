@@ -1,9 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
-import { Row, Col, Typography, Space, Carousel } from 'antd';
-import { EyeOutlined } from '@ant-design/icons';
+import { Typography, Space, Carousel } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from '../features/auth/authSlice';
-import { serviceService, balanceService } from '../services';
+import { serviceService } from '../services';
 import MainLayout from '../components/layout/MainLayout';
 import ProfileBalanceInfo from '../components/ProfileBalanceInfo';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +16,16 @@ const Dashboard = () => {
   const [banners, setBanners] = useState([]);
   const initialFetchDone = useRef(false);
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -25,12 +34,10 @@ const Dashboard = () => {
       if (!isAuthenticated || initialFetchDone.current) return;
 
       try {
-        // Only fetch profile if we don't have user data
         if (!user) {
           await dispatch(getProfile()).unwrap();
         }
 
-        // Fetch other data only if component is still mounted
         if (isMounted) {
           const [servicesResponse, bannersResponse] = await Promise.all([
             serviceService.getServices(),
@@ -72,103 +79,106 @@ const Dashboard = () => {
 
   return (
     <MainLayout>
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '24px' }}>
-        {/* Profile and Balance Section */}
-        <ProfileBalanceInfo />
+      {/* Profile and Balance Section */}
+      <ProfileBalanceInfo />
 
-        {/* Services Grid */}
-        <div style={{ marginBottom: '40px' }}>
-          <Row gutter={[24, 24]}>
-            {services.map((service) => (
-              <Col key={service.service_code} xs={8} sm={6} md={4} lg={3}>
-                <div 
-                  onClick={() => navigate(`/transaction/${service.service_code}`)}
-                  style={{ 
-                    textAlign: 'center', 
-                    cursor: 'pointer',
-                    transition: 'transform 0.2s',
-                    ':hover': { transform: 'scale(1.05)' }
-                  }}
-                >
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    margin: '0 auto 8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <img
-                      src={serviceIcons[service.service_name]}
-                      alt={service.service_name}
-                      style={{ 
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'contain'
-                      }}
-                    />
-                  </div>
-                  <Text style={{ 
-                    fontSize: '12px', 
-                    color: '#4D4D4D',
-                    display: 'block',
-                    lineHeight: '1.2'
-                  }}>
-                    {service.service_name}
-                  </Text>
-                </div>
-              </Col>
-            ))}
-          </Row>
-        </div>
-
-        {/* Promo Banner Carousel */}
-        <div>
-          <Text style={{ 
-            fontSize: '16px', 
-            fontWeight: 500, 
-            color: '#1A1A1A',
-            display: 'block',
-            marginBottom: '16px'
-          }}>
-            Temukan promo menarik
-          </Text>
-          <Carousel 
-            autoplay
-            slidesToShow={3}
-            slidesToScroll={1}
-            dots={false}
-            infinite={true}
-            speed={500}
-            cssEase="linear"
-            arrows={true}
-            responsive={[
-              {
-                breakpoint: 768,
-                settings: {
-                  slidesToShow: 2,
-                  slidesToScroll: 1,
-                }
-              },
-              {
-                breakpoint: 480,
-                settings: {
-                  slidesToShow: 1,
-                  slidesToScroll: 1,
-                }
-              }
-            ]}
+      {/* Services Grid */}
+      <div className="service-grid">
+        {services.map((service) => (
+          <div
+            key={service.service_code}
+            onClick={() => navigate(`/transaction/${service.service_code}`)}
+            className="service-item"
+            style={{ 
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '8px'
+            }}
           >
-            {[1, 2, 3, 4, 5].map((num) => (
-              <div key={num} className="banner-slide">
-                <img
-                  src={`/assets/Banner ${num}.png`}
-                  alt={`Banner ${num}`}
-                />
-              </div>
-            ))}
-          </Carousel>
-        </div>
+            <div style={{
+              width: isMobile ? '36px' : '48px',
+              height: isMobile ? '36px' : '48px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <img
+                src={serviceIcons[service.service_name]}
+                alt={service.service_name}
+                style={{ 
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
+            <Text style={{ 
+              fontSize: isMobile ? '11px' : '12px', 
+              color: '#4D4D4D',
+              textAlign: 'center',
+              lineHeight: 1.2
+            }}>
+              {service.service_name}
+            </Text>
+          </div>
+        ))}
+      </div>
+
+      {/* Promo Banner Carousel */}
+      <div>
+        <Text style={{ 
+          fontSize: isMobile ? '14px' : '16px', 
+          fontWeight: 500, 
+          color: '#1A1A1A',
+          display: 'block',
+          marginBottom: '16px'
+        }}>
+          Temukan promo menarik
+        </Text>
+        <Carousel 
+          autoplay
+          slidesToShow={3}
+          slidesToScroll={1}
+          dots={false}
+          infinite={true}
+          speed={500}
+          cssEase="linear"
+          arrows={true}
+          responsive={[
+            {
+              breakpoint: 1200,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll: 1,
+              }
+            },
+            {
+              breakpoint: 768,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1,
+              }
+            },
+            {
+              breakpoint: 480,
+              settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+              }
+            }
+          ]}
+        >
+          {[1, 2, 3, 4, 5].map((num) => (
+            <div key={num} className="banner-slide">
+              <img
+                src={`/assets/Banner ${num}.png`}
+                alt={`Banner ${num}`}
+              />
+            </div>
+          ))}
+        </Carousel>
       </div>
     </MainLayout>
   );

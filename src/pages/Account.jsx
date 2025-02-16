@@ -22,6 +22,16 @@ const Account = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Fetch profile data when component mounts
   useEffect(() => {
@@ -154,14 +164,22 @@ const Account = () => {
 
   return (
     <MainLayout>
-      <div style={{ maxWidth: '480px', margin: '0 auto', padding: '40px 24px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+      <div style={{ 
+        maxWidth: isMobile ? '100%' : '480px', 
+        margin: '0 auto', 
+        padding: isMobile ? '24px 16px' : '40px 24px',
+        width: '100%'
+      }}>
+        <div style={{ 
+          textAlign: 'center', 
+          marginBottom: isMobile ? '24px' : '32px'
+        }}>
           <div 
             style={{ 
               position: 'relative',
-              width: '120px',
-              height: '120px',
-              margin: '0 auto 24px',
+              width: isMobile ? '96px' : '120px',
+              height: isMobile ? '96px' : '120px',
+              margin: '0 auto 16px',
               cursor: 'pointer'
             }}
             onClick={handleImageClick}
@@ -181,15 +199,18 @@ const Account = () => {
               bottom: '0',
               right: '0',
               background: '#FFFFFF',
-              width: '32px',
-              height: '32px',
+              width: isMobile ? '28px' : '32px',
+              height: isMobile ? '28px' : '32px',
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
             }}>
-              <EditOutlined style={{ color: '#666666' }} />
+              <EditOutlined style={{ 
+                color: '#666666',
+                fontSize: isMobile ? '14px' : '16px'
+              }} />
             </div>
           </div>
 
@@ -201,7 +222,10 @@ const Account = () => {
             style={{ display: 'none' }}
           />
 
-          <Title level={4} style={{ margin: 0 }}>
+          <Title level={4} style={{ 
+            margin: 0,
+            fontSize: isMobile ? '20px' : '24px'
+          }}>
             {profileData?.first_name} {profileData?.last_name}
           </Title>
         </div>
@@ -210,47 +234,94 @@ const Account = () => {
           form={form}
           layout="vertical"
           disabled={!isEditing}
+          style={{
+            width: '100%'
+          }}
         >
           <Form.Item
             name="email"
-            label="Email"
+            label={
+              <span style={{ 
+                fontSize: isMobile ? '12px' : '14px',
+                color: '#4D4D4D'
+              }}>
+                Email
+              </span>
+            }
           >
-            <Input disabled={true} />
+            <Input 
+              disabled={true} 
+              style={{
+                height: isMobile ? '40px' : '48px',
+                fontSize: isMobile ? '14px' : '16px'
+              }}
+            />
           </Form.Item>
 
           <Form.Item
             name="firstName"
-            label="Nama Depan"
+            label={
+              <span style={{ 
+                fontSize: isMobile ? '12px' : '14px',
+                color: '#4D4D4D'
+              }}>
+                Nama Depan
+              </span>
+            }
             rules={[
               { required: true, message: 'Nama depan wajib diisi' }
             ]}
           >
-            <Input />
+            <Input 
+              style={{
+                height: isMobile ? '40px' : '48px',
+                fontSize: isMobile ? '14px' : '16px'
+              }}
+            />
           </Form.Item>
 
           <Form.Item
             name="lastName"
-            label="Nama Belakang"
+            label={
+              <span style={{ 
+                fontSize: isMobile ? '12px' : '14px',
+                color: '#4D4D4D'
+              }}>
+                Nama Belakang
+              </span>
+            }
             rules={[
               { required: true, message: 'Nama belakang wajib diisi' }
             ]}
           >
-            <Input />
+            <Input 
+              style={{
+                height: isMobile ? '40px' : '48px',
+                fontSize: isMobile ? '14px' : '16px'
+              }}
+            />
           </Form.Item>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '32px' }}>
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: isMobile ? '12px' : '16px', 
+            marginTop: isMobile ? '24px' : '32px'
+          }}>
             {!isEditing ? (
               <>
                 <Button
                   variant="primary"
                   onClick={handleEditProfile}
                   loading={loading}
+                  fullWidth={isMobile}
                 >
                   Edit Profile
                 </Button>
                 <Button
                   variant="outline"
                   onClick={handleLogout}
+                  fullWidth={isMobile}
                 >
                   Logout
                 </Button>
@@ -261,6 +332,7 @@ const Account = () => {
                   variant="primary"
                   onClick={handleSaveProfile}
                   loading={loading}
+                  fullWidth={isMobile}
                 >
                   Simpan
                 </Button>
@@ -268,6 +340,7 @@ const Account = () => {
                   variant="outline"
                   onClick={handleCancelEdit}
                   disabled={loading}
+                  fullWidth={isMobile}
                 >
                   Batalkan
                 </Button>

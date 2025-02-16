@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Row, Col, Typography, Space } from 'antd';
+import { Typography } from 'antd';
 import { transactionService } from '../services';
 import MainLayout from '../components/layout/MainLayout';
 import ProfileBalanceInfo from '../components/ProfileBalanceInfo';
@@ -12,7 +12,17 @@ const TransactionHistory = () => {
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const limit = 5;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const fetchTransactions = async (currentOffset) => {
     try {
@@ -65,62 +75,89 @@ const TransactionHistory = () => {
 
   return (
     <MainLayout>
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '24px' }}>
-        {/* Profile and Balance Section */}
-        <ProfileBalanceInfo />
+      {/* Profile and Balance Section */}
+      <ProfileBalanceInfo />
 
-        {/* Transaction History Section */}
-        <div style={{ marginBottom: '40px' }}>
-          <Title level={4} style={{ marginBottom: '24px' }}>Semua Transaksi</Title>
+      {/* Transaction History Section */}
+      <div style={{ 
+        maxWidth: '800px',
+        margin: '0 auto',
+        width: '100%'
+      }}>
+        <Title level={4} style={{ 
+          marginBottom: '24px',
+          fontSize: isMobile ? '20px' : '24px',
+          textAlign: isMobile ? 'center' : 'left'
+        }}>
+          Semua Transaksi
+        </Title>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {transactions.map((transaction, index) => (
-              <div
-                key={`${transaction.invoice_number}-${index}`}
-                style={{
-                  padding: '16px',
-                  border: '1px solid #E5E5E5',
-                  borderRadius: '8px',
-                  background: '#FFFFFF'
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div>
-                    <Text style={{ 
-                      fontSize: '14px',
-                      color: transaction.transaction_type === 'TOPUP' ? '#1A9E75' : '#FF0000',
-                      fontWeight: 600,
-                      display: 'block'
-                    }}>
-                      {formatAmount(
-                        transaction.total_amount,
-                        transaction.transaction_type === 'TOPUP' ? 'credit' : 'debit'
-                      )}
-                    </Text>
-                    <Text style={{ fontSize: '12px', color: '#666666' }}>
-                      {formatDate(transaction.created_on)}
-                    </Text>
-                  </div>
-                  <Text style={{ fontSize: '14px', color: '#1A1A1A' }}>
-                    {transaction.description}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {transactions.map((transaction, index) => (
+            <div
+              key={`${transaction.invoice_number}-${index}`}
+              className="transaction-item"
+              style={{
+                padding: isMobile ? '12px' : '16px',
+                border: '1px solid #E5E5E5',
+                borderRadius: '8px',
+                background: '#FFFFFF'
+              }}
+            >
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: isMobile ? 'center' : 'flex-start',
+                flexDirection: isMobile ? 'column' : 'row',
+                gap: isMobile ? '8px' : 0
+              }}>
+                <div>
+                  <Text className="amount" style={{ 
+                    fontSize: isMobile ? '12px' : '14px',
+                    color: transaction.transaction_type === 'TOPUP' ? '#1A9E75' : '#FF0000',
+                    fontWeight: 600,
+                    display: 'block'
+                  }}>
+                    {formatAmount(
+                      transaction.total_amount,
+                      transaction.transaction_type === 'TOPUP' ? 'credit' : 'debit'
+                    )}
+                  </Text>
+                  <Text className="date" style={{ 
+                    fontSize: isMobile ? '10px' : '12px', 
+                    color: '#666666' 
+                  }}>
+                    {formatDate(transaction.created_on)}
                   </Text>
                 </div>
+                <Text className="description" style={{ 
+                  fontSize: isMobile ? '12px' : '14px', 
+                  color: '#1A1A1A',
+                  textAlign: isMobile ? 'center' : 'right'
+                }}>
+                  {transaction.description}
+                </Text>
               </div>
-            ))}
-          </div>
-
-          {hasMore && (
-            <div style={{ textAlign: 'center', marginTop: '24px' }}>
-              <Button
-                variant="outline"
-                onClick={handleShowMore}
-                loading={loading}
-              >
-                Show More
-              </Button>
             </div>
-          )}
+          ))}
         </div>
+
+        {hasMore && (
+          <div style={{ 
+            textAlign: 'center', 
+            marginTop: '24px',
+            marginBottom: isMobile ? '32px' : '40px'
+          }}>
+            <Button
+              variant="outline"
+              onClick={handleShowMore}
+              loading={loading}
+              fullWidth={isMobile}
+            >
+              Show More
+            </Button>
+          </div>
+        )}
       </div>
     </MainLayout>
   );

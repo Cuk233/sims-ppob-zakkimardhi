@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Row, Col, Typography, Input } from 'antd';
+import { Row, Col, Typography } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { serviceService, transactionService } from '../services';
 import { useModal } from '../components/modals/ModalProvider';
@@ -14,6 +14,16 @@ const Transaction = () => {
   const { serviceCode } = useParams();
   const [service, setService] = useState(null);
   const { openModalSuccess, openModalError } = useModal();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchService = async () => {
@@ -58,71 +68,76 @@ const Transaction = () => {
 
   return (
     <MainLayout>
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '24px' }}>
-        {/* Profile and Balance Section */}
-        <ProfileBalanceInfo />
+      {/* Profile and Balance Section */}
+      <ProfileBalanceInfo />
 
-        {/* Payment Section */}
-        <Row gutter={24}>
-          <Col span={24}>
+      {/* Payment Section */}
+      <Row>
+        <Col xs={24} md={16} lg={12} style={{ 
+          margin: '0 auto',
+          width: '100%'
+        }}>
+          <div style={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: isMobile ? 'center' : 'flex-start',
+            textAlign: isMobile ? 'center' : 'left'
+          }}>
+            <Text style={{ 
+              fontSize: isMobile ? '14px' : '16px',
+              color: '#4D4D4D',
+              marginBottom: '8px'
+            }}>
+              Pembayaran
+            </Text>
+            <Title level={2} style={{ 
+              fontSize: isMobile ? '24px' : '32px',
+              fontWeight: 700,
+              marginTop: 0,
+              marginBottom: '32px',
+              color: '#1A1A1A'
+            }}>
+              {service.service_name}
+            </Title>
+
             <div style={{ 
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start'
+              width: '100%', 
+              marginBottom: '32px',
+              padding: isMobile ? '20px' : '24px',
+              background: '#FFFFFF',
+              border: '1px solid #D0D0D0',
+              borderRadius: '8px'
             }}>
               <Text style={{ 
-                fontSize: '16px',
+                fontSize: isMobile ? '14px' : '16px',
                 color: '#4D4D4D',
+                display: 'block',
                 marginBottom: '8px'
               }}>
-                Pembayaran
+                Total Bayar
               </Text>
-              <Title level={2} style={{ 
-                fontSize: '32px',
+              <Text style={{ 
+                fontSize: isMobile ? '24px' : '32px',
                 fontWeight: 700,
-                marginTop: 0,
-                marginBottom: '32px',
                 color: '#1A1A1A'
               }}>
-                {service.service_name}
-              </Title>
-
-              <div style={{ 
-                width: '100%', 
-                marginBottom: '32px',
-                padding: '24px',
-                background: '#FFFFFF',
-                border: '1px solid #D0D0D0',
-                borderRadius: '8px'
-              }}>
-                <Text style={{ 
-                  fontSize: '16px',
-                  color: '#4D4D4D',
-                  display: 'block',
-                  marginBottom: '8px'
-                }}>
-                  Total Bayar
-                </Text>
-                <Text style={{ 
-                  fontSize: '32px',
-                  fontWeight: 700,
-                  color: '#1A1A1A'
-                }}>
-                  Rp{service.service_tariff.toLocaleString('id-ID')}
-                </Text>
-              </div>
-
-              <Button
-                variant="primary"
-                onClick={handlePayment}
-                block
-              >
-                Bayar
-              </Button>
+                Rp{service.service_tariff.toLocaleString('id-ID')}
+              </Text>
             </div>
-          </Col>
-        </Row>
-      </div>
+
+            <Button
+              variant="primary"
+              onClick={handlePayment}
+              fullWidth={isMobile}
+              style={{
+                width: isMobile ? '100%' : 'auto'
+              }}
+            >
+              Bayar
+            </Button>
+          </div>
+        </Col>
+      </Row>
     </MainLayout>
   );
 };

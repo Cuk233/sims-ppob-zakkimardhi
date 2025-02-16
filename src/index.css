@@ -416,3 +416,253 @@ body {
     height: 100px;
   }
 }
+
+/* Add these responsive styles to the existing CSS */
+
+/* Responsive Container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1441px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .container {
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  h1.ant-typography {
+    font-size: 24px !important;
+  }
+
+  h2.ant-typography {
+    font-size: 20px !important;
+  }
+
+  h3.ant-typography {
+    font-size: 18px !important;
+  }
+
+  h4.ant-typography {
+    font-size: 16px !important;
+  }
+}
+
+/* Responsive Form Elements */
+@media (max-width: 768px) {
+  .ant-input-affix-wrapper {
+    padding: 8px !important;
+  }
+
+  .ant-input {
+    font-size: 14px !important;
+  }
+
+  .ant-btn {
+    height: 40px;
+    font-size: 14px;
+  }
+}
+
+/* Responsive Grid */
+@media (max-width: 768px) {
+  .ant-row {
+    margin-right: -8px !important;
+    margin-left: -8px !important;
+  }
+
+  .ant-col {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+  }
+}
+
+/* Responsive Balance Card */
+@media (max-width: 768px) {
+  .balance-card {
+    padding: 20px !important;
+    min-height: 140px !important;
+  }
+}
+
+/* Responsive Service Grid */
+@media (max-width: 768px) {
+  .service-item {
+    text-align: center;
+  }
+
+  .service-item img {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .service-item .ant-typography {
+    font-size: 11px !important;
+  }
+}
+
+/* Responsive Banner Carousel */
+@media (max-width: 768px) {
+  .banner-slide {
+    height: 120px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-slide {
+    height: 100px !important;
+  }
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+  .custom-modal .ant-modal-content {
+    margin: 0 16px;
+  }
+
+  .custom-modal .modal-content {
+    padding: 24px 16px 16px;
+  }
+
+  .custom-modal .modal-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .custom-modal .modal-title {
+    font-size: 18px;
+  }
+
+  .custom-modal .modal-description {
+    font-size: 14px;
+  }
+}
+
+/* Responsive Auth Layout */
+@media (max-width: 768px) {
+  .auth-form-container {
+    padding: 24px 16px;
+    margin-bottom: 60px;
+  }
+
+  .auth-form {
+    max-width: 100%;
+    padding: 0 16px;
+  }
+}
+
+/* Responsive Profile Section */
+@media (max-width: 768px) {
+  .profile-section {
+    text-align: center;
+  }
+
+  .profile-section img {
+    margin: 0 auto 16px;
+  }
+}
+
+/* Responsive Transaction History */
+@media (max-width: 768px) {
+  .transaction-item {
+    padding: 12px !important;
+  }
+
+  .transaction-item .amount {
+    font-size: 12px !important;
+  }
+
+  .transaction-item .date {
+    font-size: 10px !important;
+  }
+
+  .transaction-item .description {
+    font-size: 12px !important;
+  }
+}
+
+/* Responsive Menu */
+@media (max-width: 768px) {
+  .ant-menu-item {
+    height: 48px !important;
+    line-height: 48px !important;
+  }
+}
+
+/* Responsive Drawer */
+.ant-drawer-content-wrapper {
+  width: 280px !important;
+}
+
+@media (max-width: 380px) {
+  .ant-drawer-content-wrapper {
+    width: 240px !important;
+  }
+}
+
+/* Responsive Buttons */
+@media (max-width: 768px) {
+  .ant-btn {
+    min-width: unset !important;
+    padding: 0 24px !important;
+  }
+
+  .outline-button {
+    height: 36px !important;
+  }
+}
+
+/* Update service grid for larger screens */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+@media (min-width: 1200px) {
+  .service-grid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-grid {
+    gap: 16px;
+  }
+}
+
+/* Update balance card for larger screens */
+@media (min-width: 1200px) {
+  .balance-card {
+    max-width: 800px;
+    margin-left: auto;
+  }
+}
+
+/* Update profile section for larger screens */
+@media (min-width: 1200px) {
+  .profile-section {
+    max-width: 400px;
+  }
+}
+
+/* Add these to your existing styles */

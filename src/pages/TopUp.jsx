@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Row, Col, Typography, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { balanceService } from '../services';
@@ -13,6 +13,16 @@ const TopUp = () => {
   const navigate = useNavigate();
   const [amount, setAmount] = useState('');
   const { openModalSuccess, openModalError } = useModal();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const quickAmounts = [
     { label: 'Rp10.000', value: 10000 },
@@ -69,85 +79,88 @@ const TopUp = () => {
 
   return (
     <MainLayout>
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '24px' }}>
-        {/* Profile and Balance Section */}
-        <ProfileBalanceInfo />
+      {/* Profile and Balance Section */}
+      <ProfileBalanceInfo />
 
-        {/* Top Up Section */}
-        <Row gutter={24}>
-          {/* Left Column - Input Form */}
-          <Col span={12}>
-            <div style={{ 
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start'
+      {/* Top Up Section */}
+      <Row gutter={[24, 24]}>
+        {/* Left Column - Input Form */}
+        <Col xs={24} md={12}>
+          <div style={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: isMobile ? 'center' : 'flex-start',
+            textAlign: isMobile ? 'center' : 'left',
+            marginBottom: isMobile ? '24px' : 0
+          }}>
+            <Text style={{ 
+              fontSize: isMobile ? '14px' : '16px',
+              color: '#4D4D4D',
+              marginBottom: '8px'
             }}>
-              <Text style={{ 
-                fontSize: '16px',
-                color: '#4D4D4D',
-                marginBottom: '8px'
-              }}>
-                Silahkan masukan
-              </Text>
-              <Title level={2} style={{ 
-                fontSize: '32px',
-                fontWeight: 700,
-                marginTop: 0,
-                marginBottom: '32px',
-                color: '#1A1A1A'
-              }}>
-                Nominal Top Up
-              </Title>
-
-              <Input
-                placeholder="masukan nominal Top Up"
-                value={amount ? `Rp${formatAmount(amount)}` : ''}
-                onChange={handleAmountChange}
-                style={{ 
-                  height: '48px',
-                  marginBottom: '24px',
-                  fontSize: '16px',
-                  width: '100%',
-                  borderRadius: '8px',
-                  border: '1px solid #D0D0D0'
-                }}
-              />
-
-              <Button
-                variant="primary"
-                onClick={handleTopUp}
-                disabled={!isValidAmount}
-                fullWidth={true}
-                style={{ alignSelf: 'flex-start' }}
-              >
-                Top Up
-              </Button>
-            </div>
-          </Col>
-
-          {/* Right Column - Quick Amounts */}
-          <Col span={12}>
-            <div style={{ 
-              marginTop: '100px',
-              paddingLeft: '24px'
+              Silahkan masukan
+            </Text>
+            <Title level={2} style={{ 
+              fontSize: isMobile ? '24px' : '32px',
+              fontWeight: 700,
+              marginTop: 0,
+              marginBottom: '32px',
+              color: '#1A1A1A'
             }}>
-              <Row gutter={[16, 8]}>
-                {quickAmounts.map((quickAmount) => (
-                  <Col key={quickAmount.value} span={8}>
-                    <Button
-                      variant="outline"
-                      onClick={() => handleQuickAmountClick(quickAmount.value)}
-                      fullWidth={true}
-                    >
-                      {quickAmount.label}
-                    </Button>
-                  </Col>
-                ))}
-              </Row>
-            </div>
-          </Col>
-        </Row>
-      </div>
+              Nominal Top Up
+            </Title>
+
+            <Input
+              placeholder="masukan nominal Top Up"
+              value={amount ? `Rp${formatAmount(amount)}` : ''}
+              onChange={handleAmountChange}
+              style={{ 
+                height: isMobile ? '40px' : '48px',
+                marginBottom: '24px',
+                fontSize: isMobile ? '14px' : '16px',
+                width: '100%',
+                borderRadius: '8px',
+                border: '1px solid #D0D0D0'
+              }}
+            />
+
+            <Button
+              variant="primary"
+              onClick={handleTopUp}
+              disabled={!isValidAmount}
+              fullWidth={isMobile}
+              style={{ 
+                alignSelf: isMobile ? 'stretch' : 'flex-start',
+                width: isMobile ? '100%' : 'auto'
+              }}
+            >
+              Top Up
+            </Button>
+          </div>
+        </Col>
+
+        {/* Right Column - Quick Amounts */}
+        <Col xs={24} md={12}>
+          <div style={{ 
+            marginTop: isMobile ? 0 : '100px',
+            paddingLeft: isMobile ? 0 : '24px'
+          }}>
+            <Row gutter={[16, 16]}>
+              {quickAmounts.map((quickAmount) => (
+                <Col key={quickAmount.value} xs={12} sm={8}>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleQuickAmountClick(quickAmount.value)}
+                    fullWidth
+                  >
+                    {quickAmount.label}
+                  </Button>
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </Col>
+      </Row>
     </MainLayout>
   );
 };
