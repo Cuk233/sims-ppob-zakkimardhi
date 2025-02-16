@@ -1,0 +1,418 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --primary-color: #f42619;
+  --secondary-color: #ff6b6b;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fff;
+}
+
+/* Auth Layout Styles */
+.auth-container {
+  min-height: 100vh;
+  margin: 0 !important;
+}
+
+.auth-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 120px;
+}
+
+.auth-form {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.auth-illustration {
+  display: none;
+  background-color: #fff1f0;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .auth-illustration {
+    display: flex;
+  }
+}
+
+/* Ant Design Component Overrides */
+.ant-input-affix-wrapper {
+  border-radius: 8px !important;
+  padding: 12px !important;
+  border: 1px solid #d9d9d9 !important;
+}
+
+.ant-input-affix-wrapper:hover {
+  border-color: var(--primary-color) !important;
+}
+
+.ant-input-affix-wrapper-focused,
+.ant-input-affix-wrapper:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(244, 38, 25, 0.1) !important;
+}
+
+.ant-input {
+  font-size: 16px !important;
+}
+
+.ant-input-prefix {
+  margin-right: 12px !important;
+}
+
+.ant-btn {
+  height: 48px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ant-btn-primary {
+  background-color: var(--primary-color) !important;
+  border: none !important;
+}
+
+.ant-btn-primary:disabled {
+  background-color: #e4e4e4 !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.outline-button {
+  height: 40px !important;
+  border-radius: 4px !important;
+  border: 1px solid #d0d0d0 !important;
+  color: #1a1a1a !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  background: #ffffff !important;
+}
+
+.outline-button:hover {
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+}
+
+.ant-form-item {
+  margin-bottom: 24px !important;
+}
+
+.ant-form-item-explain-error {
+  color: var(--primary-color) !important;
+  margin-top: 4px !important;
+}
+
+.ant-typography {
+  color: #1a1a1a !important;
+}
+
+.ant-typography a {
+  color: var(--primary-color) !important;
+  font-weight: 600 !important;
+}
+
+.ant-typography a:hover {
+  opacity: 0.9 !important;
+}
+
+/* Result Modal Styles */
+.result-modal .ant-modal-content {
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.result-modal .ant-modal-body {
+  padding: 0;
+}
+
+.result-modal .ant-typography {
+  margin: 0;
+}
+
+/* Custom Modal Styles */
+.custom-modal .ant-modal-content {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.custom-modal .ant-modal-body {
+  padding: 0;
+}
+
+.custom-modal .modal-content {
+  padding: 32px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.custom-modal .modal-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 16px;
+}
+
+.custom-modal .modal-title {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.custom-modal .modal-description {
+  font-size: 16px;
+  color: #4d4d4d;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.custom-modal .ant-modal-confirm-btns {
+  padding: 0 24px 24px;
+  margin: 0;
+}
+
+.custom-modal .ant-btn {
+  height: 48px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.custom-modal .ant-btn-primary {
+  background-color: #f42619;
+  border: none;
+}
+
+.custom-modal .modal-cancel-button {
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+}
+
+.custom-modal .ant-modal-confirm-body {
+  padding: 0;
+  text-align: center;
+}
+
+.custom-modal .ant-modal-confirm-body > .anticon {
+  display: none;
+}
+
+.custom-modal .ant-modal-confirm-body-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.ant-modal-mask {
+  background-color: rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Modal Overrides */
+.ant-modal-confirm-body-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32px 24px 8px;
+}
+
+.ant-modal-confirm-icon {
+  margin-right: 0;
+  margin-bottom: 16px;
+}
+
+.ant-modal-confirm-title {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.ant-modal-confirm-btns {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.ant-modal-confirm .ant-modal-confirm-btns {
+  float: none;
+  text-align: center;
+}
+
+/* Add these styles to the Custom Modal Styles section */
+
+.custom-modal .modal-action-link {
+  color: var(--primary-color) !important;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.custom-modal .modal-action-link:hover {
+  opacity: 0.8;
+}
+
+.custom-modal .modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.custom-modal .modal-action-primary {
+  color: var(--primary-color) !important;
+}
+
+.custom-modal .modal-action-secondary {
+  color: #666 !important;
+}
+
+/* Carousel Dots Styles */
+.ant-carousel .slick-dots {
+  bottom: 12px;
+}
+
+.ant-carousel .slick-dots li {
+  width: 8px;
+  height: 8px;
+}
+
+.ant-carousel .slick-dots li button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+  background: #fff;
+}
+
+/* Service Grid Hover Effect */
+.service-item {
+  transition: transform 0.2s ease-in-out;
+}
+
+.service-item:hover {
+  transform: scale(1.05);
+}
+
+/* Balance Card Background */
+.balance-card {
+  background: url("/assets/Background Saldo.png") no-repeat center;
+  background-size: cover;
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 40px;
+  min-height: 180px;
+}
+
+/* Menu Item Hover Effect */
+.ant-menu-item:hover {
+  color: var(--primary-color) !important;
+}
+
+.ant-menu-item-selected {
+  color: var(--primary-color) !important;
+}
+
+.ant-menu-item::after {
+  border-bottom-color: var(--primary-color) !important;
+}
+
+/* Multi-Item Carousel Styles */
+.ant-carousel {
+  margin: 0 -8px;
+}
+
+.ant-carousel .slick-slide {
+  padding: 0 8px;
+}
+
+.ant-carousel .slick-track {
+  margin-left: 0;
+}
+
+.ant-carousel .slick-list {
+  margin: 0 -8px;
+}
+
+.banner-slide {
+  height: 146px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Override default Ant Design carousel arrows */
+.ant-carousel .slick-prev,
+.ant-carousel .slick-next {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.ant-carousel .slick-prev {
+  left: -16px;
+}
+
+.ant-carousel .slick-next {
+  right: -16px;
+}
+
+.ant-carousel .slick-prev:hover,
+.ant-carousel .slick-next:hover {
+  background: #fff;
+}
+
+.ant-carousel .slick-prev::before,
+.ant-carousel .slick-next::before {
+  color: #1a1a1a;
+  font-size: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ant-carousel .slick-slide {
+    padding: 0 4px;
+  }
+
+  .banner-slide {
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-slide {
+    height: 100px;
+  }
+}
